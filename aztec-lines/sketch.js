@@ -7,7 +7,7 @@ var capturer = new CCapture({
 });
 
 function setup() {
-    let p5canvas = createCanvas(500, 500);
+    let p5canvas = createCanvas(1000, 1000);
     canvas = p5canvas.canvas
     step = 20;
     x = 0;
@@ -18,7 +18,7 @@ function setup() {
 
 function generateLines() {
     tempLines = [];
-    for (var y = 0; y < 500; y = y + step) {
+    for (var y = 0; y < height; y = y + step) {
         if (random() < 0.5) {
             tempLines.push({xStart: 0, yStart: y, xEnd: step, yEnd: y + step, stroke: 4 * random() + 1});
         }
@@ -31,7 +31,7 @@ function generateLines() {
 }
 
 function updateLineArray() {
-    if (x < 500) {
+    if (x < width) {
         generateLines();
     }
     else {
