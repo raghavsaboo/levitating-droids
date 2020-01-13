@@ -28,7 +28,7 @@ function draw() {
         capturer.stop();
         capturer.save();
         noLoop();
-        console.log(`Render time ${floor(millis() / 1000)} seconds`)
+        console.log(`Render time ${floor(millis() / 1000)} seconds`);
     }
     background(210);
     ortho(-width, width, height, -height, 10, 1000);
@@ -42,14 +42,14 @@ function draw() {
             let a = angle + offset;
             let h = floor(map(sin(a), -1, 1, 50, 300));
             translate(x - width / 2, 0, z - height / 2);
-            normalMaterial()
+            normalMaterial();
             box(w, h, w, 500000, 500000);
-            pop()
+            pop();
         }
     }
 
     angle -= 0.05;
 
     // Code for drawing the frame
-    capturer.capture(canvas)
+    capturer.capture(canvas);
 }
