@@ -99,45 +99,44 @@ def main():
     
     draw_background(cr, backgrounds[3][0]/255.0, backgrounds[3][1]/255.0, backgrounds[3][2]/255.0, width, height)
 
-    for image_no in range(0, 600, 1):
-        current_row = []
-        for i in range(0, number_beziers):
-            alive = int(random.getrandbits(1))
+    current_row = []
+    for i in range(0, number_beziers):
+        alive = int(random.getrandbits(1))
+        c = random.choice(pallete3)
+        current_row.append((alive, pallete3.index(c)))
+
+    next_row = copy.deepcopy(current_row)
+    for k in range(y_d-int(y_d/7), height, y_d):
+        
+        # Determine the next row state by comparing rules
+        for j in range(0, len(current_row)-2):
+            alive = rules[(current_row[j][0], current_row[j+1][0], current_row[j+2][0])]
             c = random.choice(pallete3)
-            current_row.append((alive, pallete3.index(c)))
+            next_row[j+1] = (alive, pallete3.index(c))
+        alive = rules[(current_row[len(current_row)-1][0], current_row[0][0], current_row[1][0])]
+        c = random.choice(pallete3)
+        next_row[0] = (alive, pallete3.index(c))
+        alive = rules[(current_row[len(current_row)-2][0], current_row[len(current_row)-1][0], current_row[0][0])]
+        next_row[len(next_row)-1] = (alive, pallete3.index(c))
 
-        next_row = copy.deepcopy(current_row)
-        for k in range(y_d-int(y_d/7), height, y_d):
-            
-            # Determine the next row state by comparing rules
-            for j in range(0, len(current_row)-2):
-                alive = rules[(current_row[j][0], current_row[j+1][0], current_row[j+2][0])]
-                c = random.choice(pallete3)
-                next_row[j+1] = (alive, pallete3.index(c))
-            alive = rules[(current_row[len(current_row)-1][0], current_row[0][0], current_row[1][0])]
-            c = random.choice(pallete3)
-            next_row[0] = (alive, pallete3.index(c))
-            alive = rules[(current_row[len(current_row)-2][0], current_row[len(current_row)-1][0], current_row[0][0])]
-            next_row[len(next_row)-1] = (alive, pallete3.index(c))
+        # Draw connecting lines and the next row of circles
+        if (k > y_d):
+            for i in range(0, len(next_row)):
+                if (next_row[i][0] is 1 and current_row[i][0] is 1):
+                    if (next_row[i][1] is current_row[i][1]):
+                        draw_connected_line(cr, i * x_d, k, i * x_d, k - y_d, line_size, pallete3[next_row[i][1]])
 
-            # Draw connecting lines and the next row of circles
-            if (k > y_d):
-                for i in range(0, len(next_row)):
-                    if (next_row[i][0] is 1 and current_row[i][0] is 1):
-                        if (next_row[i][1] is current_row[i][1]):
-                            draw_connected_line(cr, i * x_d, k, i * x_d, k - y_d, line_size, pallete3[next_row[i][1]])
-
-            for i in range(1, len(next_row)):
-                if (i > 1):
-                    if (next_row[i][0] is 1 and next_row[i-1][0] is 1):
-                        if (next_row[i][1] is next_row[i-1][1]):
-                            draw_connected_line(cr, i * x_d, k, (i-1) * x_d, k, line_size, pallete3[next_row[i][1]])
-                if (next_row[i][0] is 1):
-                    draw_circle_fill(cr, i * x_d, k, circle_size, pallete3[next_row[i][1]][0]/255.0, pallete3[next_row[i][1]][1]/255.0, pallete3[next_row[i][1]][2]/255.0)
+        for i in range(1, len(next_row)):
+            if (i > 1):
+                if (next_row[i][0] is 1 and next_row[i-1][0] is 1):
+                    if (next_row[i][1] is next_row[i-1][1]):
+                        draw_connected_line(cr, i * x_d, k, (i-1) * x_d, k, line_size, pallete3[next_row[i][1]])
+            if (next_row[i][0] is 1):
+                draw_circle_fill(cr, i * x_d, k, circle_size, pallete3[next_row[i][1]][0]/255.0, pallete3[next_row[i][1]][1]/255.0, pallete3[next_row[i][1]][2]/255.0)
 
 
-            current_row = copy.deepcopy(next_row)
-        ims.write_to_png('base' + str(image_no) + '.png')
+        current_row = copy.deepcopy(next_row)
+    ims.write_to_png('base.png')
 
 if __name__ == "__main__":
     main()

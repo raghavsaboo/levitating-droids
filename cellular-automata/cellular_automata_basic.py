@@ -53,9 +53,16 @@ def draw_bezier(cr, x, y, x1, y1, x2, y2, x3, y3):
     cr.stroke()
 
 def main():
-    width, height = 3000, 3000
-    number_beziers = 200
-    circle_size = 5
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--width", help="Specify an image width", default=800, type=int)
+    parser.add_argument("--height", help="Specify an image height", default=800, type=int)
+    parser.add_argument("--b", help="Specify number of beziers", default=200, type=int)
+    parser.add_argument("--cs", help="Specify size of circles", default=5, type=int)
+    args = parser.parse_args()
+ 
+    width, height = args.width, args.height
+    number_beziers = args.b
+    circle_size = args.cs
     x_d = int(width/number_beziers)
     y_d = x_d
     
@@ -67,9 +74,6 @@ def main():
     current_row = []
     for i in range(0, number_beziers):
         current_row.append(int(random.getrandbits(1)))
-#        current_row.append(0)
-#    current_row[50] = 1
-#    current_row[150] = 1
 
     next_row = copy.deepcopy(current_row)
     for k in range(y_d, height, y_d):
