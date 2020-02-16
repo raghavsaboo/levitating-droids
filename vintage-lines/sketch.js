@@ -17,7 +17,7 @@ function setup(){
 
 function draw(){
     let secondsElapsed = frameCount / framerate;
-    if (secondsElapsed >= 10) {
+    if (secondsElapsed >= 60) {
         capturer.stop();
         capturer.save();
         noLoop();
