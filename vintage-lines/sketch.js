@@ -5,7 +5,7 @@ let canvas
 var capturer = new CCapture({
     format: 'png',
     framerate: framerate,
-    name: 'dancing_cubes',
+    name: 'vintage-lines',
     quality: 100,
 });
 
